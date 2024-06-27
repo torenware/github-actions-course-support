@@ -1,33 +1,39 @@
+# kick it!
 name: Solar System Workflow
 
-on: 
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-      - 'feature/*'
-    
+on:
+    workflow_dispatch:
+    push:
+        branches:
+            - main
+            - 'feature/*'
+env:
+    MONGO_USERNAME: ${{ vars.MONGO_USERNAME}}
+    MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD}}
+    MONGO_URI: ${{ vars.MONGO_URI }}
+
 jobs:
     unit-testing:
         name: Unit Testing
         runs-on: ubuntu-latest
+        environment: development
         steps:
-        - name: Checkout Repository
-          uses: actions/checkout@v4
+            - name: Checkout Repository
+              uses: actions/checkout@v4
 
-        - name: Setup NodeJS Version
-          uses: actions/setup-node@v3
-          with:
-            node-version: 20
-    
-        - name: Install Dependencies
-          run: npm install
-    
-        - name: Unit Testing
-          run: npm test
-          
-        - name: Archive Test Result
-          uses: actions/upload-artifact@v3
-          with:
-            name: Mocha-Test-Result
-            path: test-results.xml
+            - name: Setup NodeJS Version
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 20
+
+            - name: Install Dependencies
+              run: npm install
+
+            - name: Unit Testing
+              run: npm test
+
+            - name: Archive Test Result
+              uses: actions/upload-artifact@v3
+              with:
+                  name: Mocha-Test-Result
+                  path: test-results.xml
