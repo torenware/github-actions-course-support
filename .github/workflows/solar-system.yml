@@ -15,6 +15,7 @@ jobs:
     unit-testing:
         name: Unit Testing
         runs-on: ubuntu-latest
+        environment: development
         steps:
             - name: Checkout Repository
               uses: actions/checkout@v4
