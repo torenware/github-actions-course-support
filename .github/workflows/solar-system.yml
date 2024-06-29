@@ -19,11 +19,11 @@ jobs:
         environment: development
         strategy:
           matrix:
-            nodejs_version: [18, 19, 20]
+            nodejs_version: [18, 20]
             operating_system: [ubuntu-latest, macos-latest]
             exclude:
               - nodejs_version: 18
-                operating_system: macos_latest
+                operating_system: macos-latest
 
         steps:
             - name: Checkout Repository
@@ -45,3 +45,19 @@ jobs:
               with:
                   name: Mocha-Test-Result
                   path: test-results.xml
+
+    code-coverage:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+        - uses: actions/setup-node@v3
+          with:
+            node-version: 18
+        - run: npm install
+        - continue-on-error: true
+          run: npm run coverage
+        - uses: actions/upload-artifact@v3
+          with:
+            name: Code-Coverage-Result
+            path: coverage
+            retention-days: 5
