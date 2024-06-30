@@ -7,3 +7,7 @@ test-results.xml
 .env
 .env.*
 
+# act support
+.secrets
+.vars
+
