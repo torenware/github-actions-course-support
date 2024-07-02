@@ -2,50 +2,55 @@ import path from 'path';
 import OS from 'os';
 import express from 'express';
 import bodyParser from 'body-parser';
-import mongoose from 'mongoose';
 import cors from 'cors';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import dotenv  from "dotenv";
+import fs from 'node:fs';
 
+// Load the database from file
+let planetsData = {};
+try {
+  const json = fs.readFileSync('./planets.json');
+  planetsData = JSON.parse(json.toString());
+  if (typeof planetsData !== 'array') {
+    throw new Error('expected planets data to be an arry of object');
+  }
+} catch (e) {
+  console.log()
+}
 
-dotenv.config();
+const getPlanet = id => {
+  return planetsData.find(planet => planet.id === id);
+}
+
 const app = express();
 const __dirname = dirname(fileURLToPath(import.meta.url));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '/')));
 app.use(cors())
 
-try {
-  await mongoose.connect(process.env.MONGO_URI, {
-    user: process.env.MONGO_USERNAME,
-    pass: process.env.MONGO_PASSWORD,
-  });
-  console.log('Mongodb is connected');
-} catch (err) {
-  console.log("error!! " + err)
-}
 
-var Schema = mongoose.Schema;
+// var Schema = mongoose.Schema;
 
-var dataSchema = new Schema({
-    name: String,
-    id: Number,
-    description: String,
-    image: String,
-    velocity: String,
-    distance: String
-});
-var planetModel = mongoose.model('planets', dataSchema);
+// var dataSchema = new Schema({
+//     name: String,
+//     id: Number,
+//     description: String,
+//     image: String,
+//     velocity: String,
+//     distance: String
+// });
+// var planetModel = mongoose.model('planets', dataSchema);
 
 
 
 app.post('/planet',   async function(req, res) {
    // console.log("Received Planet ID " + req.body.id)
    try {
-     const planetData = await planetModel.findOne({
-        id: req.body.id
-    });
+    const planetData = getPlanet(parseInt(req.body.id));
+    if (!planetData) {
+      throw new Error('planet not found');
+    }
     res.send(planetData);
   } catch (err) {
     alert("Ooops, We only have 9 planets and a sun. Select a number from 0 - 9")

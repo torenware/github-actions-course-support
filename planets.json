@@ -1,0 +1,65 @@
+[{
+	"id": 3,
+	"name": "Earth",
+	"description": "home",
+	"image": "images/earth.png",
+	"velocity": 29.8,
+	"distance": 149.6
+},
+{
+	"id": 2,
+	"name": "Venus",
+	"description": "hot",
+	"image": "images/venus.png",
+	"velocity": 35,
+	"distance": 108.2
+},
+{
+	"id": 1,
+	"name": "Mercury",
+	"description": "small",
+	"image": "images/mercury.png",
+	"velocity": 47.4,
+	"distance": 57.9
+},
+{
+	"id": 4,
+	"name": "Mars",
+	"description": "red",
+	"image": "images/mars.png",
+	"velocity": 24.1,
+	"distance": 228
+},
+{
+	"id": 5,
+	"name": "Jupiter",
+	"description": "big",
+	"image": "images/jupiter.png",
+	"velocity": 13.1,
+	"distance": 778.5
+},
+{
+	"id": 6,
+	"name": "Saturn",
+	"description": "rings",
+	"image": "images/saturn.png",
+	"velocity": 9.7,
+	"distance": 1432
+},
+{
+	"id": 7,
+	"name": "Uranus",
+	"description": "joke",
+	"image": "images/uranus.png",
+	"velocity": 6.8,
+	"distance": 2867
+},
+{
+	"id": 8,
+	"name": "Neptune",
+	"description": "blue",
+	"image": "images/neptune.png",
+	"velocity": 5.4,
+	"distance": 4515
+}]
+
