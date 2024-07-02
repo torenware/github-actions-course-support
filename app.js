@@ -1,56 +1,62 @@
-const path = require('path');
-const express = require('express');
-const OS = require('os');
-const bodyParser = require('body-parser');
-const mongoose = require("mongoose");
+import path from 'path';
+import OS from 'os';
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+import fs from 'node:fs';
+
+// Load the database from file
+let planetsData = {};
+try {
+  const json = fs.readFileSync('./planets.json');
+  planetsData = JSON.parse(json.toString());
+  if (typeof planetsData !== 'array') {
+    throw new Error('expected planets data to be an arry of object');
+  }
+} catch (e) {
+  console.log()
+}
+
+const getPlanet = id => {
+  return planetsData.find(planet => planet.id === id);
+}
+
 const app = express();
-const cors = require('cors')
-
-
+const __dirname = dirname(fileURLToPath(import.meta.url));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '/')));
 app.use(cors())
 
-mongoose.connect(process.env.MONGO_URI, {
-    user: process.env.MONGO_USERNAME,
-    pass: process.env.MONGO_PASSWORD,
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}, function(err) {
-    if (err) {
-        console.log("error!! " + err)
-    } else {
-      //  console.log("MongoDB Connection Successful")
-    }
-})
 
-var Schema = mongoose.Schema;
+// var Schema = mongoose.Schema;
 
-var dataSchema = new Schema({
-    name: String,
-    id: Number,
-    description: String,
-    image: String,
-    velocity: String,
-    distance: String
-});
-var planetModel = mongoose.model('planets', dataSchema);
+// var dataSchema = new Schema({
+//     name: String,
+//     id: Number,
+//     description: String,
+//     image: String,
+//     velocity: String,
+//     distance: String
+// });
+// var planetModel = mongoose.model('planets', dataSchema);
 
 
 
-app.post('/planet',   function(req, res) {
+app.post('/planet',   async function(req, res) {
    // console.log("Received Planet ID " + req.body.id)
-    planetModel.findOne({
-        id: req.body.id
-    }, function(err, planetData) {
-        if (err) {
-            alert("Ooops, We only have 9 planets and a sun. Select a number from 0 - 9")
-            res.send("Error in Planet Data")
-        } else {
-            res.send(planetData);
-        }
-    })
-})
+   try {
+    const planetData = getPlanet(parseInt(req.body.id));
+    if (!planetData) {
+      throw new Error('planet not found');
+    }
+    res.send(planetData);
+  } catch (err) {
+    alert("Ooops, We only have 9 planets and a sun. Select a number from 0 - 9")
+    res.send("Error in Planet Data")
+  }
+});
 
 app.get('/',   async (req, res) => {
     res.sendFile(path.join(__dirname, '/', 'index.html'));
@@ -84,4 +90,4 @@ app.listen(3000, () => {
 })
 
 
-module.exports = app;
+export default app;

@@ -1,12 +1,15 @@
-let mongoose = require("mongoose");
-let server = require("./app");
-let chai = require("chai");
-let chaiHttp = require("chai-http");
+import mongoose from "mongoose";
+import dotenv from 'dotenv';
+import chai from 'chai';
+import chaiHttp from "chai-http";
+
+dotenv.config();
+import server from './app.js';
 
 
-// Assertion 
+// Assertion
 chai.should();
-chai.use(chaiHttp); 
+chai.use(chaiHttp);
 
 describe('Planets API Suite', () => {
 
@@ -146,7 +149,7 @@ describe('Planets API Suite', () => {
         // });
 
 
-    });        
+    });
 });
 
 //Use below test case to achieve coverage
