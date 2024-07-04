@@ -60,11 +60,11 @@ jobs:
     code-coverage:
       runs-on: ubuntu-latest
       environment: development
-      services:
-          mongodb:
-            image: torenware/solar-system-mongodb
-            env:
-              MONGO_USER_PW: ${{ env.MONGO_PASSWORD }}
+      # services:
+      #     mongodb:
+      #       image: torenware/solar-system-mongodb
+      #       env:
+      #         MONGO_USER_PW: ${{ env.MONGO_PASSWORD }}
       steps:
         - uses: actions/checkout@v4
         - uses: actions/setup-node@v4
